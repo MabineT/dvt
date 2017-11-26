@@ -50,7 +50,7 @@
 
                     android:layout_centerHorizontal="true"
                     android:layout_below="@+id/w_datetime"
-                    android:src="@drawable/ic_wb_cloudy_white_36dp"
+                    android:src="@drawable/img_03"
 
                     android:visibility="visible"
                     android:layout_marginTop="5dp"
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/w_pressure"
-                    android:text="1000 hPa"
+                    android:text="10 hPa"
 
                     android:layout_below="@+id/w_cloudcondition"
 

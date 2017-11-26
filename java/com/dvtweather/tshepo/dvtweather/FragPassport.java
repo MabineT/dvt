@@ -70,8 +70,6 @@ public class FragPassport extends Fragment {
     private LinearLayout relativeLayout;
     private RelativeLayout searchCity;
     private View view;
-    //private SwipeRefreshLayout refreshLayout;
-    //private GPSTracker mGPS;
 
     private ImageView pImageView;
     private TextView pDatetime;
@@ -81,12 +79,8 @@ public class FragPassport extends Fragment {
     private TextView pCurrent;
     private TextView pMinMax;
     private Button button;
-    //private TextView wSunrise;
-    //private TextView wSunset;
 
-    //private long currentTime;
     private Date date;
-
 
     private JSONMain main;
     private JSONOther other;
@@ -102,13 +96,11 @@ public class FragPassport extends Fragment {
 
         getWidgets(view);
 
-        //refreshLayout();
-
-
-
     }
 
-
+	/**
+     * gets widgets for XML.
+     */
     private void getWidgets(View v)
     {
         pDatetime   = (TextView) v.findViewById(R.id.p_datetime);
@@ -129,7 +121,7 @@ public class FragPassport extends Fragment {
         searchCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Thol' ukuthi",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "Thol' ukuthi",Toast.LENGTH_LONG).show();
                 Search();
             }
         });
@@ -138,35 +130,32 @@ public class FragPassport extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getContext(), "m=works", Toast.LENGTH_LONG).show();
-                Search();
+                //Search();
             }
         });
-
-        //wSunrise    = (TextView) v.findViewById(R.id.w_sunrise);
-        //wSunset     = (TextView) v.findViewById(R.id.w_sunset);
-
-        /*
-        * set labels to null?
-        * */
-
     }
 
+	/**
+     * using locations api, retrieves locations latitude and longitude
+	 * to parse to the weather api later.
+     */
     private void Search() {
-        //btnSearch = (FloatingActionButton) mView.findViewById(R.id.btnFB_search);
-        button.setOnClickListener(new View.OnClickListener() {
+        searchCity.setOnClickListener(new View.OnClickListener() {
+		 //button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                //IsSearchig = true;
-                //new myAsync().execute();
-
-                try {
+            public void onClick(View v) 
+			{
+			try {
                     Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN).build(getActivity());
                     startActivityForResult(intent, 1);
-                } catch (GooglePlayServicesRepairableException e) {
-                    // TODO: Handle the error.
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    // TODO: Handle the error.
+                } 
+				catch (GooglePlayServicesRepairableException e) 
+				{
+                    e.printStackTrace();
+                } 
+				catch (GooglePlayServicesNotAvailableException e) 
+				{
+                    e.printStackTrace();
                 }
 
             }
@@ -175,39 +164,23 @@ public class FragPassport extends Fragment {
     }
 
     public LatLng genLatLng = null;
-    //public CharSequence searchResultsPlaceName = "";
-    //public CharSequence searchResultsAddress = null;
-    // A place has been received; use requestCode to track the request.
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK)
             {
-                // retrieve the data by using getPlace() method.
+                //retrieve the data by using getPlace() method.
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
-                Log.e("Tag", "Place: " + place.getAddress() + place.getPhoneNumber());
+                //Log.e("Tag", "Place: " + place.getAddress() + place.getPhoneNumber());
 
-                //Saving the search results in variables to use later
+                //Saving the search latitude and longitude
                 genLatLng = place.getLatLng();
-                //searchResultsPlaceName = place.getName();
-                //searchResultsAddress = place.getAddress();
-
+				//formatting string to parse to the API
                 String latlng = "lat=" + genLatLng.latitude +"&lon="+ genLatLng.longitude;
                 System.out.println(latlng);
                 getJSONobject(latlng);
-
-                //displayWeatherInfo();
-
-                /*
-                try {
-                    //geoSearch(searchResultsPlaceName.toString(),genLatLng);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                */
-
-            }
+			
+			}
             else if (resultCode == PlaceAutocomplete.RESULT_ERROR)
             {
                 Status status = PlaceAutocomplete.getStatus(getActivity(), data);
@@ -223,15 +196,16 @@ public class FragPassport extends Fragment {
     }
 
 
+
     private SimpleDateFormat todayFormat = new SimpleDateFormat("HH:mm \tEEEE, dd/MMMM/yyyy ");
 
     /**
-     * get current device location in decimal form.
+     * retrives information from the api and populates JSON > Java objects
+     * @param coord = contains a formatted text containing latitude and longitude
+     *              uses volley libraries
      */
     public void getJSONobject(String coord)
     {
-        //volley api here
-        //lat=-26.18379191&lon=27.98840935
         String url = String.format("http://api.openweathermap.org/data/2.5/weather?%s&appid=74b118a2e76bfa7bee7ed2941525f768&units=metric", coord);
 
         JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -302,7 +276,8 @@ public class FragPassport extends Fragment {
                     e.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener() {
+        }, new Response.ErrorListener()
+		{
             @Override
             public void onErrorResponse(VolleyError error) {
 
@@ -311,43 +286,20 @@ public class FragPassport extends Fragment {
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(jor);
-
-        //displayWeatherInfo();
+		
     }
 
+	/**
+     * displays select object information on app widgets
+     */
     private void displayWeatherInfo()
     {
-        /*
-        wDatetime = (TextView) v.findViewById(R.id.w_datetime);
-        wCity = (TextView) v.findViewById(R.id.w_city);
-        wCloudcover = (TextView) v.findViewById(R.id.w_cloudcondition);
-        wPrecip = (TextView) v.findViewById(R.id.w_rain_percentage);
-
-        wCurrent = (TextView) v.findViewById(R.id.w_current);
-        wMinMax = (TextView) v.findViewById(R.id.w_min_max);
-        wSunrise    = (TextView) v.findViewById(R.id.w_sunrise);
-        */
-
-        //date = new Date(other.getDate());
         date = new Date(System.currentTimeMillis());
         String d = "<b><i> Last refreshed: </i></b> " + todayFormat.format(date);
         pDatetime.setText(Html.fromHtml(d));
 
         pCity.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         pCity.setText(other.getName() + ", " + system.getCountrycode());
-
-        /*
-        Date rise = new Date(system.getSunrise());
-        date = new Date(system.getSunrise());
-        wSunrise.setText("rise: "+rise_set.format(rise));
-
-
-        Date set = new Date(system.getSunset());
-        date = new Date(system.getSunset());
-        wSunset.setText("set: " + rise_set.format(set));
-        */
-
-        //pImageView.setImageResource();
 
         int resID = getResources().getIdentifier("drawable/img_" + weather.getIcon(), null, getActivity().getPackageName());
         @SuppressWarnings("deprecation")
@@ -364,6 +316,5 @@ public class FragPassport extends Fragment {
 
         String tmp = "<i>Night</i> \u21D3: " + main.getMin() + "\u2103 || " + "<i>Day</i> \u21D1: " + main.getMax() + "\u2103";
         pMinMax.setText(Html.fromHtml(tmp));
-
     }
 }

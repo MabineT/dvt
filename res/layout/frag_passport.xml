@@ -111,7 +111,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/p_pressure"
-                android:text="1000 hPa"
+                android:text="11 hPa"
 
                 android:layout_below="@+id/p_cloudcondition"
 
@@ -124,7 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/p_min_max"
-                android:text="MIN: 6 / MAX: 35"
+                android:text="MIN: 7 / MAX: 35"
 
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/p_current"
@@ -138,7 +138,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/p_current"
-                android:text="21"
+                android:text="17"
                 android:textSize="50dp"
 
                 android:layout_alignParentRight="true"

@@ -91,8 +91,6 @@ public class FragMyLocation extends Fragment {
         getWidgets(view);
 
         refreshLayout();
-
-
     }
 
 
@@ -111,10 +109,6 @@ public class FragMyLocation extends Fragment {
 
         //wSunrise    = (TextView) v.findViewById(R.id.w_sunrise);
         //wSunset     = (TextView) v.findViewById(R.id.w_sunset);
-
-        /*
-        * set labels to null?
-        * */
 
     }
 
@@ -165,11 +159,13 @@ public class FragMyLocation extends Fragment {
         }
     }
 
-
+    /**
+     * retrives information from the api and populates JSON > Java objects
+     * @param coord = contains a formatted text containing latitude and longitude
+     *              uses volley libraries
+     */
     public void getJSONdata(String coord)
     {
-        //volley api here
-        //lat=-26.18379191&lon=27.98840935
         String url = String.format("http://api.openweathermap.org/data/2.5/weather?%s&appid=74b118a2e76bfa7bee7ed2941525f768&units=metric", coord);
 
         JsonObjectRequest jor = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -249,44 +245,19 @@ public class FragMyLocation extends Fragment {
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
         queue.add(jor);
-
-        //displayWeatherInfo();
     }
 
+    /**
+     * displays select object information on app widgets
+     */
     private void displayWeatherInfo()
     {
-        /*
-        wDatetime = (TextView) v.findViewById(R.id.w_datetime);
-        wCity = (TextView) v.findViewById(R.id.w_city);
-        wCloudcover = (TextView) v.findViewById(R.id.w_cloudcondition);
-        wPress = (TextView) v.findViewById(R.id.w_rain_percentage);
-
-        wCurrent = (TextView) v.findViewById(R.id.w_current);
-        wMinMax = (TextView) v.findViewById(R.id.w_min_max);
-        wSunrise    = (TextView) v.findViewById(R.id.w_sunrise);
-        */
-
-        //date = new Date(other.getDate());
-        
 		date = new Date(System.currentTimeMillis());
         String dt = "<b><i> Last refreshed: </i></b> " + todayFormat.format(date);
 		wDatetime.setText(Html.fromHtml(dt));
 
 		wCity.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         wCity.setText(other.getName() + ", " + Main.getCountryName(getContext(), mGPS.getLatitude(), mGPS.getLongitude()));
-		
-        /*
-        Date rise = new Date(system.getSunrise());
-        date = new Date(system.getSunrise());
-        wSunrise.setText("rise: "+rise_set.format(rise));
-
-
-        Date set = new Date(system.getSunset());
-        date = new Date(system.getSunset());
-        wSunset.setText("set: " + rise_set.format(set));
-        */
-
-        //wImageView.setImageResource();
 
         int resID = getResources().getIdentifier("drawable/img_" + weather.getIcon(), null, getActivity().getPackageName());
         @SuppressWarnings("deprecation")
