@@ -132,9 +132,7 @@
                 android:visibility="visible"
                 android:padding="5dp"
                 android:textColor="@color/black"
-
                 />
-
 
             <TextView
                 android:layout_width="wrap_content"
@@ -157,21 +155,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:elevation="10dp"
+            android:elevation="15dp"
             android:layout_margin="5dp"
             android:background="@drawable/text_shape"
+            android:id="@+id/searchLayout"
             >
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="City/Town name"
-                android:id="@+id/editText"
-                android:elevation="5dp"
+                android:text="Search for a City/Town"
+
                 android:layout_centerVertical="true"
-
-                android:layout_alignParentLeft="true"
-
+                android:layout_centerHorizontal="true"
+                android:visibility="visible"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/black"
                 />
 
             <Button

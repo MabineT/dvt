@@ -2,12 +2,12 @@ package com.dvtweather.tshepo.dvtweather;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,12 +42,13 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Created by Tshepo on 07/08/2017.
+ * Created by Tshepo
  */
 
 public class FragPassport extends Fragment {
@@ -66,6 +68,7 @@ public class FragPassport extends Fragment {
      * fragment variable and widget declaration.
      */
     private LinearLayout relativeLayout;
+    private RelativeLayout searchCity;
     private View view;
     //private SwipeRefreshLayout refreshLayout;
     //private GPSTracker mGPS;
@@ -74,14 +77,14 @@ public class FragPassport extends Fragment {
     private TextView pDatetime;
     private TextView pCity;
     private TextView pCloudcover;
-    private TextView pPrecip;
+    private TextView pPress;
     private TextView pCurrent;
     private TextView pMinMax;
     private Button button;
     //private TextView wSunrise;
     //private TextView wSunset;
 
-    private long currentTime;
+    //private long currentTime;
     private Date date;
 
 
@@ -114,12 +117,22 @@ public class FragPassport extends Fragment {
         pImageView = (ImageView) v.findViewById(R.id.p_image);
 
         pCloudcover = (TextView) v.findViewById(R.id.p_cloudcondition);
-        pPrecip     = (TextView) v.findViewById(R.id.p_pressure);
+        pPress = (TextView) v.findViewById(R.id.p_pressure);
 
         pCurrent    = (TextView) v.findViewById(R.id.p_current);
         pMinMax     = (TextView) v.findViewById(R.id.p_min_max);
 
         button      = (Button) v.findViewById(R.id.btnEnter);
+
+        searchCity  = (RelativeLayout) v.findViewById(R.id.searchLayout);
+
+        searchCity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Thol' ukuthi",Toast.LENGTH_LONG).show();
+                Search();
+            }
+        });
 
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -161,26 +174,26 @@ public class FragPassport extends Fragment {
 
     }
 
-    public LatLng searchResultsLatLong = null;
-    public CharSequence searchResultsPlaceName = "";
-    public CharSequence searchResultsAddress = null;
+    public LatLng genLatLng = null;
+    //public CharSequence searchResultsPlaceName = "";
+    //public CharSequence searchResultsAddress = null;
     // A place has been received; use requestCode to track the request.
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK)
+            {
                 // retrieve the data by using getPlace() method.
                 Place place = PlaceAutocomplete.getPlace(getActivity(), data);
                 Log.e("Tag", "Place: " + place.getAddress() + place.getPhoneNumber());
 
-
                 //Saving the search results in variables to use later
-                searchResultsLatLong = place.getLatLng();
-                searchResultsPlaceName = place.getName();
-                searchResultsAddress = place.getAddress();
+                genLatLng = place.getLatLng();
+                //searchResultsPlaceName = place.getName();
+                //searchResultsAddress = place.getAddress();
 
-                String latlng = "lat=" + searchResultsLatLong.latitude +"&lon="+ searchResultsLatLong.longitude;
-
+                String latlng = "lat=" + genLatLng.latitude +"&lon="+ genLatLng.longitude;
                 System.out.println(latlng);
                 getJSONobject(latlng);
 
@@ -188,21 +201,23 @@ public class FragPassport extends Fragment {
 
                 /*
                 try {
-                    //geoSearch(searchResultsPlaceName.toString(),searchResultsLatLong);
+                    //geoSearch(searchResultsPlaceName.toString(),genLatLng);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 */
 
-            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+            }
+            else if (resultCode == PlaceAutocomplete.RESULT_ERROR)
+            {
                 Status status = PlaceAutocomplete.getStatus(getActivity(), data);
-                // TODO: Handle the error.
-                //Snackbar.make(mView,"Invalid search input!!",Snackbar.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Input is not valid..", Toast.LENGTH_LONG).show();
                 Log.e("Tag", status.getStatusMessage());
 
-            } else if (resultCode == RESULT_CANCELED) {
-                // The user canceled the operation.
-                //Snackbar.make(mView,"Search Cancelled !!",Snackbar.LENGTH_LONG).show();
+            }
+            else if (resultCode == RESULT_CANCELED)
+            {
+                Toast.makeText(getContext(), "Cancelled..", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -213,7 +228,6 @@ public class FragPassport extends Fragment {
     /**
      * get current device location in decimal form.
      */
-
     public void getJSONobject(String coord)
     {
         //volley api here
@@ -316,8 +330,10 @@ public class FragPassport extends Fragment {
 
         //date = new Date(other.getDate());
         date = new Date(System.currentTimeMillis());
-        pDatetime.setText(todayFormat.format(date));
+        String d = "<b><i> Last refreshed: </i></b> " + todayFormat.format(date);
+        pDatetime.setText(Html.fromHtml(d));
 
+        pCity.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         pCity.setText(other.getName() + ", " + system.getCountrycode());
 
         /*
@@ -336,15 +352,18 @@ public class FragPassport extends Fragment {
         int resID = getResources().getIdentifier("drawable/img_" + weather.getIcon(), null, getActivity().getPackageName());
         @SuppressWarnings("deprecation")
         Drawable weatherIcon = getResources().getDrawable(resID);
-
         pImageView.setImageDrawable(weatherIcon);
 
-        pCloudcover.setText(weather.getDescription());
+        pCloudcover.setText(weather.getDescription().toUpperCase(Locale.ENGLISH));
 
-        pPrecip.setText("pressure: " + (int)main.getPressure()+ "hPa");
+        String ap = "<small>AIR PRESSURE:</small> " + (int)main.getPressure()+ " hPa";
+        pPress.setText(Html.fromHtml(ap));
 
+        pCurrent.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         pCurrent.setText((int)main.getCurrent()+ "\u2103");
-        pMinMax.setText("Night \u21D3: " + main.getMin() + "\u2103 / " + "Day \u21D1: " + main.getMax() + "\u2103" );
+
+        String tmp = "<i>Night</i> \u21D3: " + main.getMin() + "\u2103 || " + "<i>Day</i> \u21D1: " + main.getMax() + "\u2103";
+        pMinMax.setText(Html.fromHtml(tmp));
 
     }
 }

@@ -1,10 +1,8 @@
 package com.dvtweather.tshepo.dvtweather;
 
-import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -34,10 +32,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -70,7 +66,7 @@ public class FragMyLocation extends Fragment {
     private TextView wDatetime;
     private TextView wCity;
     private TextView wCloudcover;
-    private TextView wPrecip;
+    private TextView wPress;
     private TextView wCurrent;
     private TextView wMinMax;
     //private TextView wSunrise;
@@ -108,7 +104,7 @@ public class FragMyLocation extends Fragment {
         wImageView  = (ImageView) v.findViewById(R.id.w_image);
 
         wCloudcover = (TextView) v.findViewById(R.id.w_cloudcondition);
-        wPrecip     = (TextView) v.findViewById(R.id.w_pressure);
+        wPress = (TextView) v.findViewById(R.id.w_pressure);
 
         wCurrent    = (TextView) v.findViewById(R.id.w_current);
         wMinMax     = (TextView) v.findViewById(R.id.w_min_max);
@@ -263,7 +259,7 @@ public class FragMyLocation extends Fragment {
         wDatetime = (TextView) v.findViewById(R.id.w_datetime);
         wCity = (TextView) v.findViewById(R.id.w_city);
         wCloudcover = (TextView) v.findViewById(R.id.w_cloudcondition);
-        wPrecip = (TextView) v.findViewById(R.id.w_rain_percentage);
+        wPress = (TextView) v.findViewById(R.id.w_rain_percentage);
 
         wCurrent = (TextView) v.findViewById(R.id.w_current);
         wMinMax = (TextView) v.findViewById(R.id.w_min_max);
@@ -271,12 +267,14 @@ public class FragMyLocation extends Fragment {
         */
 
         //date = new Date(other.getDate());
-        date = new Date(System.currentTimeMillis());
-        wDatetime.setText(todayFormat.format(date));
+        
+		date = new Date(System.currentTimeMillis());
+        String dt = "<b><i> Last refreshed: </i></b> " + todayFormat.format(date);
+		wDatetime.setText(Html.fromHtml(dt));
 
-
+		wCity.setTypeface(Typeface.MONOSPACE, Typeface.BOLD);
         wCity.setText(other.getName() + ", " + Main.getCountryName(getContext(), mGPS.getLatitude(), mGPS.getLongitude()));
-
+		
         /*
         Date rise = new Date(system.getSunrise());
         date = new Date(system.getSunrise());
@@ -296,12 +294,16 @@ public class FragMyLocation extends Fragment {
 
         wImageView.setImageDrawable(weatherIcon);
 
-        wCloudcover.setText(weather.getDescription());
+        wCloudcover.setText(weather.getDescription().toUpperCase(Locale.ENGLISH));
 
-        wPrecip.setText("pressure: " + (int)main.getPressure()+ "hPa");
+		String ap = "<small>AIR PRESSURE:</small> " + (int)main.getPressure()+ " hPa";
+        wPress.setText(Html.fromHtml(ap));
 
+		wCurrent.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
         wCurrent.setText((int)main.getCurrent()+ "\u2103");
-        wMinMax.setText("Night \u21D3: " + main.getMin() + "\u2103 / " + "Day \u21D1: " + main.getMax() + "\u2103" );
+		
+		String mix_max = "<i>Night</i> \u21D3: " + main.getMin() + "\u2103 || " + "<i>Day</i> \u21D1: " + main.getMax() + "\u2103";
+        wMinMax.setText(Html.fromHtml(mix_max));
     }
 
 
