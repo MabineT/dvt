@@ -1,7 +1,10 @@
 package com.dvtweather.tshepo.dvtweather;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -31,8 +34,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Tshepo on 07/08/2017.
@@ -268,7 +274,8 @@ public class FragMyLocation extends Fragment {
         date = new Date(System.currentTimeMillis());
         wDatetime.setText(todayFormat.format(date));
 
-        wCity.setText(other.getName() + ", " + system.getCountrycode());
+
+        wCity.setText(other.getName() + ", " + Main.getCountryName(getContext(), mGPS.getLatitude(), mGPS.getLongitude()));
 
         /*
         Date rise = new Date(system.getSunrise());
@@ -294,10 +301,13 @@ public class FragMyLocation extends Fragment {
         wPrecip.setText("pressure: " + (int)main.getPressure()+ "hPa");
 
         wCurrent.setText((int)main.getCurrent()+ "\u2103");
-        wMinMax.setText("\u21D3: " + main.getMin() + "\u2103 / " + "\u21D1: " + main.getMax() + "\u2103" );
-
-
+        wMinMax.setText("Night \u21D3: " + main.getMin() + "\u2103 / " + "Day \u21D1: " + main.getMax() + "\u2103" );
     }
+
+
+
+
+
 }
 
 

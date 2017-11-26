@@ -3,6 +3,8 @@ package com.dvtweather.tshepo.dvtweather;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -16,6 +18,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
 
@@ -120,5 +126,43 @@ public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedLi
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.setOnTabSelectedListener(this);
+    }
+
+
+    public static String getCountryName(Context c, double lat, double lng)
+    {
+        String name = "";
+
+        Geocoder geocoder = new Geocoder(c, Locale.getDefault());
+        try
+        {
+            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
+            Address obj = addresses.get(0);
+
+            //String streetAddress = obj.getAddressLine(0) + "\n";
+
+            //streetAddress += obj.getThoroughfare() + "\n";	//
+
+            //streetAddress += obj.getLocality() + "\n";		//city
+            String streetAddress = obj.getCountryName();
+
+
+            //streetAddress += obj.getPhone() + "\n";
+            //streetAddress += obj.getPostalCode() + "";
+
+            //streetAddress.replace("null", "   ");
+            Toast.makeText(c , streetAddress , Toast.LENGTH_LONG).show();
+            name = streetAddress;
+            //System.out.println(streetAddress);
+            //address.setText(streetAddress);
+
+        }
+        catch (IOException e)
+        {
+            System.out.println("failed to obtain");
+            e.printStackTrace();
+        }
+
+        return  name;
     }
 }
