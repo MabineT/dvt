@@ -33,7 +33,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="date time"
+                    android:text="SWIPE DOWN TO REFRESH!"
                     android:id="@+id/w_datetime"
 
                     android:layout_centerHorizontal="true"
