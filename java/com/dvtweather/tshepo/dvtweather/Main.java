@@ -31,12 +31,9 @@ public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedLi
     protected TabLayout tabLayout;
     protected ViewPager viewPager;
 
+    protected int tabImage[] = {R.drawable.ic_my_location_white_36dp, R.drawable.ic_location_on_white_36dp};
 
-    int tabImage[] = {R.drawable.ic_my_location_white_36dp, R.drawable.ic_location_on_white_36dp};
-
-
-
-
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,25 +46,16 @@ public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedLi
         System.out.println(ALL_GRANTED);
     }
 
-
-    /*
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    */
-
     String[] PERMISSIONS = {Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.INTERNET, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_WIFI_STATE};
 
 
+    /**
+     * getting permissions from user.
+     */
     private static final int MY_PERMISSIONS_ALL = 650;
     public static boolean ALL_GRANTED = false;
-
-
     public boolean hasPermissions(Context context, String... permissions) {
-
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
             for (String permission : permissions) {
@@ -80,7 +68,9 @@ public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedLi
         return true;
     }
 
-
+    /**
+     * setting permissions boolean to true if all are granted successfully.
+     */
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void grantMultiplePermissions() {
         if (!hasPermissions(this, PERMISSIONS)) {
@@ -89,7 +79,6 @@ public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedLi
             ALL_GRANTED = true;
         }
     }
-
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -106,8 +95,9 @@ public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedLi
 
     }
 
-
-
+    /**
+     * setting up the tablayout.
+     */
     private void tabLayoutOnCreation() {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
@@ -122,13 +112,19 @@ public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedLi
         PagerMain adapter = new PagerMain(getSupportFragmentManager(), tabLayout.getTabCount());
 
         viewPager.setAdapter(adapter);
-        //this line right here, \/ beastly..
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.setOnTabSelectedListener(this);
     }
 
 
+    /**
+     * retrieving country name using lat and lng coordinates
+     * @param c context to be passed where this method is used
+     * @param lat latitude
+     * @param lng longitude
+     * @return country full name
+     */
     public static String getCountryName(Context c, double lat, double lng)
     {
         String name = "";
@@ -138,25 +134,9 @@ public class Main extends AppCompatActivity implements TabLayout.OnTabSelectedLi
         {
             List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
             Address obj = addresses.get(0);
-
-            //String streetAddress = obj.getAddressLine(0) + "\n";
-
-            //streetAddress += obj.getThoroughfare() + "\n";	//
-
-            //streetAddress += obj.getLocality() + "\n";		//city
             String streetAddress = obj.getCountryName();
-
-
-            //streetAddress += obj.getPhone() + "\n";
-            //streetAddress += obj.getPostalCode() + "";
-
-            //streetAddress.replace("null", "   ");
-            Toast.makeText(c , streetAddress , Toast.LENGTH_LONG).show();
-            name = streetAddress;
-            //System.out.println(streetAddress);
-            //address.setText(streetAddress);
-
-        }
+			name = streetAddress;
+                    }
         catch (IOException e)
         {
             System.out.println("failed to obtain");
