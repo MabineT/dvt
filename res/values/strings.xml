@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">dvt weather</string>
-
-
-
-    <string name="label_mylocation">My Location</string>
-    <string name="label_passport">Passport</string>
-</resources>
