@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.dvtweather.tshepo.dvtweather.Main">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="false"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.03"
+            android:background="?attr/colorPrimary"
+
+            android:backgroundTint="@color/transgrey"
+            android:paddingTop="10dp"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/dodgerblue"
+            app:tabMode="fixed"
+
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/white" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

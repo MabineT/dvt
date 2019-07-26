@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+
+    android:orientation="vertical"
+    android:id="@+id/frag_mylocation"
+    >
+    <android.support.v4.widget.SwipeRefreshLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/swipe_refresh_layout"
+        android:layout_marginBottom="50dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/custom_shape"
+
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="141dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="SWIPE DOWN TO REFRESH!"
+                    android:id="@+id/w_datetime"
+
+                    android:layout_centerHorizontal="true"
+
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/deepskyblue"
+                    />
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/w_image"
+
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/w_datetime"
+                    android:src="@drawable/img_03"
+
+                    android:visibility="visible"
+                    android:layout_marginTop="5dp"
+                    />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sunrise"
+                    android:id="@+id/w_sunrise"
+
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+
+                    android:visibility="gone"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/grey"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="sunset"
+                    android:id="@+id/w_sunset"
+
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+
+                    android:visibility="gone"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/grey"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/w_city"
+                    android:text="Johannesburg"
+
+                    android:layout_below="@+id/w_image"
+
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/w_cloudcondition"
+                    android:text="cloudy"
+
+                    android:layout_below="@+id/w_city"
+
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/w_pressure"
+                    android:text="10 hPa"
+
+                    android:layout_below="@+id/w_cloudcondition"
+
+                    android:visibility="visible"
+                    android:layout_margin="5dp"
+                    android:textColor="@color/black"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/w_min_max"
+                    android:text="MIN: 6 / MAX: 25"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/w_current"
+
+                    android:visibility="visible"
+                    android:padding="5dp"
+                    android:textColor="@color/black"
+
+                    />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/w_current"
+                    android:text="21"
+                    android:textSize="50dp"
+
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/w_image"
+
+                    android:visibility="visible"
+                    android:layout_marginRight="5dp"
+                    android:textColor="@color/black"
+                    />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</LinearLayout>
